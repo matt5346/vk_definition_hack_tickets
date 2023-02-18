@@ -2,3 +2,30 @@
   border-radius: 0!important;
   box-shadow: unset!important;
 }
+
+.form-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  width: 70%;
+  margin: 0 auto;
+}
+
+.form-row .vkuiSelect__custom {
+  width: 100%;
+  max-width: 340px;
+}
+
+.card_wrap__form-inner {
+  width: 80%;
+  height: 80%;
+}
+
+.card_wrap__form-inner .vkuiCard {
+  background: rgba(245, 245, 245, 0.05);
+}
+
+
+.card_wrap__form-inner .vkuiCard__in {
+  width: 100%;
+}
