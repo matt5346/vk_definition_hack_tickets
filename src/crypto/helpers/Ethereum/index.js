@@ -21,14 +21,14 @@ const networks = {
       `https://testnets.opensea.io/assets/ropsten/${contractAddress}/${tokenID}`,
     gasLimit: 700000
   },
-  rinkeby: {
-    name: "rinkeby",
-    chainId: 4,
-    transactionExplorer: "https://rinkeby.etherscan.io/tx/",
-    accountExplorer: "https://rinkeby.etherscan.io/address/",
-    blockExplorer: "https://rinkeby.etherscan.io/tx/",
+  goerli: {
+    name: "goerli",
+    chainId: 5,
+    transactionExplorer: "https://goerli.etherscan.io/tx/",
+    accountExplorer: "https://goerli.etherscan.io/address/",
+    blockExplorer: "https://goerli.etherscan.io/tx/",
     marketplaceExplorer: (contractAddress, tokenID) =>
-      `https://testnets.opensea.io/assets/rinkeby/${contractAddress}/${tokenID}`,
+      `https://testnets.opensea.io/assets/goerli/${contractAddress}/${tokenID}`,
     gasLimit: 700000
   },
   maticmum: {
@@ -89,7 +89,7 @@ const settings = {
     nativeAddress: "0xc778417E063141139Fce010982780140Aa0cD5Ab",
     defaultActiveToken: "0xf5507fca73a3804e785ee2648922d76910327c32" // dai
   },
-  rinkeby: {
+  goerli: {
     api: "https://api.rarible.org/v0.1",
     chainlinkRpc: "https://rpc.ankr.com/eth",
     blockchain: "ETHEREUM",

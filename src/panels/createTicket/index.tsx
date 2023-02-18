@@ -20,16 +20,18 @@ import {
   ModalRoot
 } from "@vkontakte/vkui";
 import TicketFormModal from "@/components/ticketFormModal";
+import { useStores } from "@/hooks/useStores";
 
 import "./index.css";
 import { Icon28AddOutline } from "@vkontakte/icons";
 
 interface IHomeProps {
   id: string;
+  userInfo?: any;
   onBack: () => void;
 }
 
-const CreateTickets: React.FC<IHomeProps> = ({ id, onBack }) => {
+const CreateTickets: React.FC<IHomeProps> = ({ id, onBack, userInfo }) => {
   const [purpose, setPurpose] = useState("");
   const [ticketsData, setTicketsData] = useState<any>([]);
   const [activeModal, setActiveModal] = React.useState<string | undefined>(
@@ -38,6 +40,9 @@ const CreateTickets: React.FC<IHomeProps> = ({ id, onBack }) => {
   const [value, setValue] = useState<Date | undefined>(() => new Date());
   const textInput = createRef<HTMLInputElement>();
   const [locale, setLocale] = useState("ru");
+  const {
+    AppStore: { connection, createNewTicket }
+  } = useStores();
 
   const onChange = (e: any) => {
     const { name, value } = e.currentTarget;
@@ -51,6 +56,9 @@ const CreateTickets: React.FC<IHomeProps> = ({ id, onBack }) => {
 
   const submitFullTicket = () => {
     console.log("submitFullTicket");
+    createNewTicket({
+      tickets: ticketsData
+    });
   };
 
   return (
@@ -93,16 +101,8 @@ const CreateTickets: React.FC<IHomeProps> = ({ id, onBack }) => {
                       name="purpose"
                       options={[
                         {
-                          value: "0",
-                          label: "Бизнес или работа"
-                        },
-                        {
-                          value: "1",
-                          label: "Индивидуальный туризм"
-                        },
-                        {
-                          value: "2",
-                          label: "Посещение близких родственников"
+                          value: connection?.userIdentity ?? "",
+                          label: "Сам"
                         }
                       ]}
                     />

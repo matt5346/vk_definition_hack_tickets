@@ -73,6 +73,7 @@ export default {
           1: "https://mainnet.infura.io/v3/6c3a9507f03a49589e3cb762331f2026",
           3: "https://ropsten.infura.io/v3/6c3a9507f03a49589e3cb762331f2026",
           4: "https://rinkeby.infura.io/v3/6c3a9507f03a49589e3cb762331f2026",
+          5: "https://goerli.infura.io/v3/",
           80001: "https://rpc-mumbai.matic.today",
           1666700000: "https://api.s0.b.hmny.io",
           77: "https://sokol.poa.network"

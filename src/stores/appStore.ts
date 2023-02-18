@@ -1,6 +1,8 @@
 import { Ethereum } from "@/crypto/helpers";
 import { makeAutoObservable } from "mobx";
-
+import ERC721Abi from "@/abi/ERC721.json";
+import SmartContract from "@/crypto/EVM/SmartContract";
+import { Contract } from "ethers";
 class AppStore {
   constructor() {
     makeAutoObservable(this);
@@ -108,6 +110,32 @@ class AppStore {
       const { store } = Ethereum.getSettings(value);
       this.shopURL = store;
     }
+  };
+
+  createNewTicket = async (val: any) => {
+    const provider = new SmartContract({ address: null })._getProvider();
+    if (!provider) return;
+
+    console.log(provider, "provider");
+    console.log(this.connection.userIdentity, "this.connection.userIdentity");
+
+    // goerli contract
+    // 0xb65caa6666c55ec9ada1a41e98fbb164a7e2be55
+    const contract = new Contract(
+      "0xb65caa6666c55ec9ada1a41e98fbb164a7e2be55",
+      ERC721Abi,
+      provider
+    );
+    const mintReq = await contract.mint(
+      this.connection.userIdentity,
+      Date.now(),
+      "",
+      {
+        gasLimit: 5000000,
+        gasPrice: 1300000000
+      }
+    );
+    console.log(mintReq, "mintReq");
   };
 }
 

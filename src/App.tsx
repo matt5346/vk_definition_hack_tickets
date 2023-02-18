@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-// import bridge from "@vkontakte/vk-bridge";
+// import bridge, { UserInfo } from "@vkontakte/vk-bridge";
 import {
   View,
   ScreenSpinner,
@@ -32,6 +32,7 @@ export enum EPanels {
 const App = () => {
   const [activePanel, setActivePanel] = useState(EPanels.CONNECT_WALLET);
   const [prevPanel, setPrevPanel] = useState(EPanels.CONNECT_WALLET);
+  // const [getUser, setUser] = useState<UserInfo>();
   const [popout, setPopout] = useState<any>(<ScreenSpinner size="large" />);
   const {
     AppStore: { setAppReady, connection }
