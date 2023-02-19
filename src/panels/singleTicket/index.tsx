@@ -2,7 +2,6 @@ import React, { useState } from "react";
 
 import {
   Panel,
-  Group,
   Button,
   Card,
   Div,
@@ -29,14 +28,14 @@ interface IProps {
 }
 
 const SingleTicket: React.FC<IProps> = ({ id, onBack }) => {
-  const [getTicketNumber, setTicketNumber] = useState<string>();
+  const [getTicketNumber, setTicketNumber] = useState<string>("0");
   const {
     AppStore: { currentTicket, buyNewTicket }
   } = useStores();
 
   const buyTicket = () => {
-    console.log("buyTicket");
-    buyNewTicket();
+    console.log(getTicketNumber, "buyTicket");
+    buyNewTicket(getTicketNumber);
   };
 
   return (

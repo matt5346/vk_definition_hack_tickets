@@ -1,4 +1,4 @@
-import React, { useState, createRef, Ref } from "react";
+import React from "react";
 import "./index.css";
 
 import { CardGrid, Card, Group, CellButton } from "@vkontakte/vkui";

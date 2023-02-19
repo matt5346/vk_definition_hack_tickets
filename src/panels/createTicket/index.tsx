@@ -1,4 +1,4 @@
-import React, { useState, createRef, useCallback } from "react";
+import React, { useState } from "react";
 
 import {
   Panel,
@@ -52,7 +52,7 @@ const CreateTickets: React.FC<IHomeProps> = ({ id, onBack, userInfo }) => {
   } = useStores();
 
   const onChange = (e: any) => {
-    const { name, value } = e.currentTarget;
+    const { value } = e.currentTarget;
 
     setPurpose(value);
   };

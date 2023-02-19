@@ -53,13 +53,8 @@ class SmartContract {
 
     const provider = await this._getProvider();
     const web3 = new Web3(provider.provider.provider);
-    const connectionData = getSettings(ConnectionStore.getNetwork().name);
-    const chainData = getData(ConnectionStore.getNetwork().name);
-    let chainId = 1;
 
     let buildInvoiceData = {};
-
-    if (chainData) chainId = chainData.chainId;
 
     const Invoice = [
       { name: "title", type: "string" },
@@ -108,8 +103,6 @@ class SmartContract {
           }
           if (result.error) return console.error("ERROR", result);
 
-          const invoice_signature = utils.splitSignature(result.result);
-
           try {
             // const tx = await contract.permit(owner, spender, value, deadline, v, r, s, { gasLimit: 100000 })
             // console.log(tx, 'tx approve')
@@ -124,7 +117,6 @@ class SmartContract {
             //     native,
             //     toNetwork
             // }
-            const invoiceData = JSON.parse(buildInvoiceData);
 
             resolve(response);
 
@@ -319,13 +311,9 @@ class SmartContract {
 
   async executeForwardContract({
     valueFromSender,
-    receiver,
     valueToReceiver,
-    permitMessage,
     forwarderNonce,
-    isPermit,
     token,
-    native,
     toChainId
   }) {
     // console.log(web3, valueFromSender, 'executeForwardContract valueFromSender')
@@ -429,21 +417,7 @@ class SmartContract {
         toChainId
       }
     });
-
-    const DeBridge_message = {
-      data: "0x",
-      executionFee: 0,
-      receiver: owner,
-      permit: "0x",
-      useAssetFee: false,
-      referralCode: 0
-    };
-
     const fee = +(await debridgeContract.globalFixedNativeFee());
-
-    const options = {
-      value: fee
-    };
 
     console.log(fee, "---FEEE----");
 
@@ -468,8 +442,6 @@ class SmartContract {
           alert(result.error.message);
         }
         if (result.error) return console.error("ERROR", result);
-
-        const requestMessage = JSON.parse(buildForwardData).message;
       }
     );
   }

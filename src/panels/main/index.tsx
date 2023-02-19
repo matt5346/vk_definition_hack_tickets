@@ -36,9 +36,6 @@ const Main: React.FC<IProps> = ({ id, go }) => {
   const search = () => {
     console.log(textInput, "text");
   };
-  const [formItemStatus, setFormItemStatus] = useState<
-    "default" | "error" | "valid" | undefined
-  >("default");
   const {
     AppStore: { getAllTickets, setChoosenTicket }
   } = useStores();
@@ -90,7 +87,7 @@ const Main: React.FC<IProps> = ({ id, go }) => {
             <Text weight="2">События, для которых доступны NFT билеты</Text>
 
             <FormLayout>
-              <FormItem style={{ padding: "12px 0" }} status={formItemStatus}>
+              <FormItem style={{ padding: "12px 0" }}>
                 <Input
                   getRef={textInput}
                   type="text"

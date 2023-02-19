@@ -6,7 +6,6 @@ import {
   AdaptivityProvider,
   AppRoot,
   ConfigProvider,
-  CellButton,
   SplitLayout,
   SplitCol
 } from "@vkontakte/vkui";

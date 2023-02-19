@@ -1,3 +1,4 @@
+/* eslint-disable import/no-anonymous-default-export */
 import POLYGON from "./ERC20Native/POLYGON.json";
 import RINKEBY from "./ERC20Native/RINKEBY.json";
 import ROPSTEN from "./ERC20Native/ROPSTEN.json";

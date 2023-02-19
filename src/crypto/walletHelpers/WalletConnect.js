@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useStores } from "@/hooks/useStores";
 
 export const useWalletConnection = () => {

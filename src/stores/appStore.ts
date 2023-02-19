@@ -129,8 +129,8 @@ class AppStore {
 
   // };
 
-  buyNewTicket = async (): Promise<boolean> => {
-    console.log("buyNewTicket");
+  buyNewTicket = async (amount: string): Promise<boolean> => {
+    console.log(amount, "buyNewTicket");
     const provider = new SmartContract({ address: null })._getProvider();
     if (!provider) return false;
 
