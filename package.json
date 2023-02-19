@@ -14,6 +14,7 @@
     "license": "MIT",
     "dependencies": {
         "@rarible/connector": "^0.9.11-beta.2",
+        "dayjs": "^1.10.7",
         "@rarible/connector-helper": "^0.9.11-beta.2",
         "@rarible/connector-walletconnect": "^0.9.11-beta.2",
         "@vkontakte/icons": "2.7.0",

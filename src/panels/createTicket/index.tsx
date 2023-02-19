@@ -21,6 +21,7 @@ import {
 } from "@vkontakte/vkui";
 import TicketFormModal from "@/components/ticketFormModal";
 import { useStores } from "@/hooks/useStores";
+import dayjs from "dayjs";
 
 import "./index.css";
 import { Icon28AddOutline } from "@vkontakte/icons";
@@ -31,15 +32,21 @@ interface IHomeProps {
   onBack: () => void;
 }
 
+type TType = {
+  name: string;
+  amount: string;
+};
+
 const CreateTickets: React.FC<IHomeProps> = ({ id, onBack, userInfo }) => {
-  const [purpose, setPurpose] = useState("");
-  const [ticketsData, setTicketsData] = useState<any>([]);
+  const [purpose, setPurpose] = useState<string>("");
+  const [getLocation, setLocation] = useState<string>("");
+  const [ticketsData, setTicketsData] = useState<TType[]>([]);
   const [activeModal, setActiveModal] = React.useState<string | undefined>(
     undefined
   );
-  const [value, setValue] = useState<Date | undefined>(() => new Date());
-  const textInput = createRef<HTMLInputElement>();
-  const [locale, setLocale] = useState("ru");
+  const [ticketDate, setTicketDate] = useState<Date | undefined>(
+    () => new Date()
+  );
   const {
     AppStore: { connection, createNewTicket }
   } = useStores();
@@ -55,10 +62,14 @@ const CreateTickets: React.FC<IHomeProps> = ({ id, onBack, userInfo }) => {
   };
 
   const submitFullTicket = () => {
-    console.log("submitFullTicket");
-    createNewTicket({
-      tickets: ticketsData
-    });
+    console.log(purpose, "submitFullTicket");
+    createNewTicket([
+      purpose,
+      getLocation,
+      dayjs(ticketDate).unix().toString(),
+      ticketsData[0].name,
+      ticketsData[0].amount
+    ]);
   };
 
   return (
@@ -111,17 +122,17 @@ const CreateTickets: React.FC<IHomeProps> = ({ id, onBack, userInfo }) => {
                     <Text style={{ marginRight: "10px" }}>Локация</Text>
                     <Input
                       style={{ minWidth: "340px" }}
-                      getRef={textInput}
+                      onChange={(e) => setLocation(e.currentTarget.value)}
                       type="text"
                       placeholder="Введите адрес или ссылку на событие"
                     />
                   </FormItem>
                   <FormItem className="form-row">
                     <Text style={{ marginRight: "10px" }}>Дата и время</Text>
-                    <LocaleProvider value={locale}>
+                    <LocaleProvider value={"ru"}>
                       <DateInput
-                        value={value}
-                        onChange={setValue}
+                        value={ticketDate}
+                        onChange={setTicketDate}
                         enableTime
                         closeOnChange
                       />
@@ -138,6 +149,7 @@ const CreateTickets: React.FC<IHomeProps> = ({ id, onBack, userInfo }) => {
                         onClick={() => setActiveModal("createTicketModal")}
                         centered
                         before={<Icon28AddOutline />}
+                        disabled={ticketsData?.length ? true : false}
                       >
                         Добавить билет
                       </CellButton>
@@ -145,7 +157,7 @@ const CreateTickets: React.FC<IHomeProps> = ({ id, onBack, userInfo }) => {
                       {ticketsData?.length
                         ? ticketsData.map((_: any, index: number) => {
                             return (
-                              <Group>
+                              <Group key={index}>
                                 <div style={{ display: "flex" }}>
                                   <Div>
                                     <Text width={500} size={16}>

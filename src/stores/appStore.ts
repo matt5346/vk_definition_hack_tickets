@@ -1,6 +1,6 @@
 import { Ethereum } from "@/crypto/helpers";
 import { makeAutoObservable } from "mobx";
-import ERC721Abi from "@/abi/ERC721.json";
+import TicketsAbi from "@/abi/TicketsAbi.json";
 import SmartContract from "@/crypto/EVM/SmartContract";
 import { Contract } from "ethers";
 class AppStore {
@@ -112,29 +112,24 @@ class AppStore {
     }
   };
 
-  createNewTicket = async (val: any) => {
+  createNewTicket = async (val: string[]) => {
     const provider = new SmartContract({ address: null })._getProvider();
     if (!provider) return;
 
-    console.log(provider, "provider");
+    console.log(val, "val");
     console.log(this.connection.userIdentity, "this.connection.userIdentity");
 
-    // goerli contract
+    // goerli old erc721 contract
     // 0xb65caa6666c55ec9ada1a41e98fbb164a7e2be55
     const contract = new Contract(
-      "0xb65caa6666c55ec9ada1a41e98fbb164a7e2be55",
-      ERC721Abi,
+      "0x1b69353d1edb2049d5ae7c26b404447eab6c4e9a",
+      TicketsAbi,
       provider
     );
-    const mintReq = await contract.mint(
-      this.connection.userIdentity,
-      Date.now(),
-      "",
-      {
-        gasLimit: 5000000,
-        gasPrice: 1300000000
-      }
-    );
+    const mintReq = await contract.doEvent([], {
+      gasLimit: 5000000,
+      gasPrice: 1300000000
+    });
     console.log(mintReq, "mintReq");
   };
 }

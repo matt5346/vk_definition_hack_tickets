@@ -2,33 +2,33 @@ import React from "react";
 
 import {
   Panel,
-  Button,
   Group,
   CardGrid,
   Card,
   Div,
-  ModalRoot,
   Text,
   CardScroll,
-  SimpleCell,
   Image,
-  PanelHeader,
   Spacing,
+  PanelHeader,
+  PanelHeaderBack,
   Cell
 } from "@vkontakte/vkui";
-import wallabyPic from "./wallaby.png";
 import verifierQr from "./verifier-qr.png";
 
-interface IHomeProps {
+interface IProps {
   id: string;
+  onBack: () => void;
 }
 
-const MyTickets: React.FC<IHomeProps> = ({ id }) => {
+const MyTickets: React.FC<IProps> = ({ id, onBack }) => {
   return (
     <Panel id={id}>
+      <PanelHeader before={<PanelHeaderBack onClick={onBack} />}>
+        Ваши билеты
+      </PanelHeader>
       <Group style={{ paddingBottom: 100 }}>
         <CardGrid style={{ background: "none", marginTop: 60 }}>
-          {/*<PanelHeader>Ваши билеты</PanelHeader>*/}
           <CardScroll size="l" style={{ width: 900, height: 100 }}>
             <Card
               mode="shadow"
