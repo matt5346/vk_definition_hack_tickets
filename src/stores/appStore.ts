@@ -182,8 +182,8 @@ class AppStore {
     console.log(this.connection.userIdentity, "this.connection.userIdentity");
     const contract = new Contract(contractId, TicketsAbi, provider);
     const mintReq = await contract.doEvent(val, {
-      gasLimit: 5500000,
-      gasPrice: 1500000000
+      gasLimit: 6000000,
+      gasPrice: 1600000000
     });
     console.log(mintReq, "mintReq");
     console.log(mintReq.value.toString(), "mintReq.value");
