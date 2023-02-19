@@ -96,7 +96,7 @@ const DynamicModalPage: React.FC<IProps> = ({
           mode="primary"
           onClick={submit}
         >
-          Создать
+          Добавить билет
         </Button>
       </Div>
     </ModalPage>
