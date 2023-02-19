@@ -116,26 +116,25 @@ class AppStore {
     }
   };
 
-  getNumberOfTickets = async () => {
+  getAllTickets = async (): Promise<string[] | undefined | null> => {
     console.log("");
     const provider = new SmartContract({ address: null })._getProvider();
-    if (!provider) return;
+    if (!provider) return null;
     const contract = new Contract(contractId, TicketsAbi, provider);
     const numberOfTickets: string = (
       await contract.totalNumberOfTickets()
     ).toString();
-    const dataOfTickets = [...Array(+numberOfTickets)].map(async (_, index) => {
-      console.log(index, "RESPONE dataOfTickets1");
-      const resp = await contract.requestTicketsData(index + 1);
-      console.log(resp, "RESPONE dataOfTickets2");
-    });
+    const dataOfTickets = await Promise.all(
+      [...Array(+numberOfTickets)].map(async (_, index) => {
+        console.log(index, "RESPONE dataOfTickets1");
+        const resp = await contract.requestTicketsData(index);
+        console.log(resp, "RESPONE dataOfTickets2");
+        return resp;
+      })
+    );
 
-    console.log(numberOfTickets, "mintReq");
-    console.log(numberOfTickets.toString(), "mintReq.value");
-  };
-
-  getAllTickets = async (eventId: string) => {
-    console.log(eventId, "eventId");
+    console.log(dataOfTickets, "dataOfTickets");
+    return dataOfTickets;
   };
 
   createNewTicket = async (val: string[]) => {
@@ -158,6 +157,7 @@ class AppStore {
       );
     }
     await mintReq.wait();
+    console.log("new ticket Created!");
   };
 }
 

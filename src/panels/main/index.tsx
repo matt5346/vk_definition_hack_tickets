@@ -24,6 +24,9 @@ interface IProps {
 }
 
 const Main: React.FC<IProps> = ({ id }) => {
+  const [ticketsData, setTicketsData] = useState<string[] | null | undefined>(
+    []
+  );
   const textInput = createRef<HTMLInputElement>();
   const search = () => {
     console.log(textInput, "text");
@@ -33,15 +36,19 @@ const Main: React.FC<IProps> = ({ id }) => {
   >("default");
 
   const {
-    AppStore: { getNumberOfTickets }
+    AppStore: { getAllTickets }
   } = useStores();
 
   useEffect(() => {
     const reqTicketsData = async () => {
-      const number = await getNumberOfTickets();
+      const tickets = (await getAllTickets())?.filter((_) => {
+        if (!_ || _[0] === "") return false;
+        return _;
+      });
+      setTicketsData(tickets);
     };
     reqTicketsData();
-  }, [getNumberOfTickets]);
+  }, [getAllTickets]);
 
   return (
     <Panel id={id}>
@@ -95,6 +102,35 @@ const Main: React.FC<IProps> = ({ id }) => {
                 />
               </FormItem>
             </FormLayout>
+
+            {ticketsData?.length && (
+              <Group>
+                {ticketsData.map((_) => {
+                  if (!_.length) return null;
+                  return (
+                    <Div>
+                      <Title
+                        weight="1"
+                        size={24}
+                        style={{ marginBottom: "10px" }}
+                      >
+                        Билет {_[3]}
+                      </Title>
+                      <Text width={500} size={16}>
+                        Организатор
+                      </Text>
+                      <Text style={{ fontSize: "12px", marginBottom: "10px" }}>
+                        {_[0]}
+                      </Text>
+                      <Text width={500} size={16}>
+                        Локация
+                      </Text>
+                      <Text style={{ fontSize: "12px" }}>{_[1]}</Text>
+                    </Div>
+                  );
+                })}
+              </Group>
+            )}
           </Card>
         </CardGrid>
       </Group>
