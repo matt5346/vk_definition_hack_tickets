@@ -15,7 +15,7 @@ interface IProps {
 const Footer: React.FC<IProps> = ({ active, onChange }) => {
   const links = [
     {
-      name: "Событие",
+      name: "Доступные события",
       icon: <First />,
       link: EPanels.MAIN_PANEL
     },

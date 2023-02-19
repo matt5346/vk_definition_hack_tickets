@@ -125,6 +125,10 @@ class AppStore {
     }
   };
 
+  // getUserTicket = async (): Promise<string[][]> => {
+
+  // };
+
   buyNewTicket = async (): Promise<boolean> => {
     console.log("buyNewTicket");
     const provider = new SmartContract({ address: null })._getProvider();
