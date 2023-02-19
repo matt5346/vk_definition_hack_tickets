@@ -3,6 +3,10 @@ import { makeAutoObservable } from "mobx";
 import TicketsAbi from "@/abi/TicketsAbi.json";
 import SmartContract from "@/crypto/EVM/SmartContract";
 import { Contract } from "ethers";
+import web3 from "web3";
+
+const contractId = "0x70d3fE4E0D8883E06A511304Bce71ffEA001AF4c";
+
 class AppStore {
   constructor() {
     makeAutoObservable(this);
@@ -112,25 +116,48 @@ class AppStore {
     }
   };
 
+  getNumberOfTickets = async () => {
+    console.log("");
+    const provider = new SmartContract({ address: null })._getProvider();
+    if (!provider) return;
+    const contract = new Contract(contractId, TicketsAbi, provider);
+    const numberOfTickets: string = (
+      await contract.totalNumberOfTickets()
+    ).toString();
+    const dataOfTickets = [...Array(+numberOfTickets)].map(async (_, index) => {
+      console.log(index, "RESPONE dataOfTickets1");
+      const resp = await contract.requestTicketsData(index + 1);
+      console.log(resp, "RESPONE dataOfTickets2");
+    });
+
+    console.log(numberOfTickets, "mintReq");
+    console.log(numberOfTickets.toString(), "mintReq.value");
+  };
+
+  getAllTickets = async (eventId: string) => {
+    console.log(eventId, "eventId");
+  };
+
   createNewTicket = async (val: string[]) => {
     const provider = new SmartContract({ address: null })._getProvider();
     if (!provider) return;
 
     console.log(val, "val");
     console.log(this.connection.userIdentity, "this.connection.userIdentity");
-
-    // goerli old erc721 contract
-    // 0xb65caa6666c55ec9ada1a41e98fbb164a7e2be55
-    const contract = new Contract(
-      "0x1b69353d1edb2049d5ae7c26b404447eab6c4e9a",
-      TicketsAbi,
-      provider
-    );
-    const mintReq = await contract.doEvent([], {
+    const contract = new Contract(contractId, TicketsAbi, provider);
+    const mintReq = await contract.doEvent(val, {
       gasLimit: 5000000,
       gasPrice: 1300000000
     });
     console.log(mintReq, "mintReq");
+    console.log(mintReq.value.toString(), "mintReq.value");
+    if (mintReq.value) {
+      console.log(
+        web3.utils.fromWei(mintReq.value.toString(), "ether"),
+        "mintReq----- RESULT"
+      );
+    }
+    await mintReq.wait();
   };
 }
 

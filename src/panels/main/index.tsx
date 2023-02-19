@@ -1,4 +1,4 @@
-import React, { useState, createRef, Ref } from "react";
+import React, { useState, createRef, useEffect } from "react";
 
 import {
   Panel,
@@ -15,6 +15,7 @@ import {
   Input
 } from "@vkontakte/vkui";
 
+import { useStores } from "@/hooks/useStores";
 import { Icon16Microphone, Icon16Search } from "@vkontakte/icons";
 import "./index.css";
 
@@ -30,6 +31,17 @@ const Main: React.FC<IProps> = ({ id }) => {
   const [formItemStatus, setFormItemStatus] = useState<
     "default" | "error" | "valid" | undefined
   >("default");
+
+  const {
+    AppStore: { getNumberOfTickets }
+  } = useStores();
+
+  useEffect(() => {
+    const reqTicketsData = async () => {
+      const number = await getNumberOfTickets();
+    };
+    reqTicketsData();
+  }, [getNumberOfTickets]);
 
   return (
     <Panel id={id}>
