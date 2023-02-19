@@ -21,11 +21,13 @@ import ConnectWallet from "./panels/connect";
 import MainPanel from "./panels/main";
 import CreateTicket from "./panels/createTicket";
 import MyTickets from "./panels/myTickets";
+import SingleTicket from "./panels/singleTicket";
 
 export enum EPanels {
   CONNECT_WALLET = "connectWallet",
   MAIN_PANEL = "mainPanel",
   CREATE_TICKET_PANEL = "createTicketPanel",
+  SINGLE_TICKET_PANEL = "singleTicket",
   MY_TICKET_PANEL = "myTicketPanel"
 }
 
@@ -82,13 +84,20 @@ const App = () => {
             <SplitCol>
               <View activePanel={activePanel}>
                 <ConnectWallet id={EPanels.CONNECT_WALLET} go={go} />
-                <MainPanel id={EPanels.MAIN_PANEL} />
+                <MainPanel
+                  id={EPanels.MAIN_PANEL}
+                  go={() => setActivePanel(EPanels.SINGLE_TICKET_PANEL)}
+                />
                 <CreateTicket
                   id={EPanels.CREATE_TICKET_PANEL}
                   onBack={() => setActivePanel(prevPanel)}
                 />
                 <MyTickets
                   id={EPanels.MY_TICKET_PANEL}
+                  onBack={() => setActivePanel(prevPanel)}
+                />
+                <SingleTicket
+                  id={EPanels.SINGLE_TICKET_PANEL}
                   onBack={() => setActivePanel(prevPanel)}
                 />
               </View>

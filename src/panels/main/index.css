@@ -23,3 +23,28 @@
   align-items: center;
   width: 100%;
 }
+
+.vkuiCardScroll__in .vkuiCardScroll__gap:first-child {
+  display: none;
+}
+
+.vkuiCardScroll__in .vkuiCardScroll__gap:last-child {
+  display: none;
+}
+
+.tickets-cards .vkuiCard {
+  transition: all .15s ease;
+  cursor: pointer;
+}
+
+.tickets-cards .vkuiCard:hover {
+  background-color: rgba(161, 96, 251, 0.15);;
+  transform: scale(0.96);
+}
+
+.text-row {
+  padding: 0;
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}

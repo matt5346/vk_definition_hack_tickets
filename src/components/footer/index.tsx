@@ -35,7 +35,7 @@ const Footer: React.FC<IProps> = ({ active, onChange }) => {
     <Group mode="plain">
       <CardGrid size="s">
         {links.map((_, index) => (
-          <Card>
+          <Card mode="shadow">
             <CellButton
               onClick={() => onChange(_.link)}
               className={

@@ -68,7 +68,16 @@ class AppStore {
     code: "",
     addition: []
   };
+
   userAmount = 0;
+
+  currentTicketIndex = "0";
+  currentTicket: string[] = [];
+
+  setChoosenTicket = (ticket: string[], key: string) => {
+    this.currentTicket = ticket;
+    this.currentTicketIndex = key;
+  };
 
   setUserAmount = (value: any) => {
     this.userAmount = value;
@@ -116,7 +125,31 @@ class AppStore {
     }
   };
 
-  getAllTickets = async (): Promise<string[] | undefined | null> => {
+  buyNewTicket = async (): Promise<boolean> => {
+    console.log("buyNewTicket");
+    const provider = new SmartContract({ address: null })._getProvider();
+    if (!provider) return false;
+
+    console.log(this.currentTicketIndex, "this.connection.userIdentity");
+    const contract = new Contract(contractId, TicketsAbi, provider);
+    const mintReq = await contract.buyTicket(this.currentTicketIndex, {
+      gasLimit: 5000000,
+      gasPrice: 1300000000
+    });
+    console.log(mintReq, "mintReq");
+    console.log(mintReq.value.toString(), "mintReq.value");
+    if (mintReq.value) {
+      console.log(
+        web3.utils.fromWei(mintReq.value.toString(), "ether"),
+        "mintReq----- RESULT"
+      );
+    }
+    await mintReq.wait();
+    console.log("new ticket Created!");
+    return true;
+  };
+
+  getAllTickets = async (): Promise<string[][] | undefined | null> => {
     console.log("");
     const provider = new SmartContract({ address: null })._getProvider();
     if (!provider) return null;
@@ -137,9 +170,9 @@ class AppStore {
     return dataOfTickets;
   };
 
-  createNewTicket = async (val: string[]) => {
+  createNewTicket = async (val: string[]): Promise<boolean> => {
     const provider = new SmartContract({ address: null })._getProvider();
-    if (!provider) return;
+    if (!provider) return false;
 
     console.log(val, "val");
     console.log(this.connection.userIdentity, "this.connection.userIdentity");
@@ -158,6 +191,7 @@ class AppStore {
     }
     await mintReq.wait();
     console.log("new ticket Created!");
+    return true;
   };
 }
 

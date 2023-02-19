@@ -18,13 +18,7 @@
 
 .card_wrap__form-inner {
   width: 80%;
-  height: 80%;
 }
-
-.card_wrap__form-inner .vkuiCard {
-  background: rgba(245, 245, 245, 0.05);
-}
-
 
 .card_wrap__form-inner .vkuiCard__in {
   width: 100%;

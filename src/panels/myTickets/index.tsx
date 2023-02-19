@@ -27,13 +27,10 @@ const MyTickets: React.FC<IProps> = ({ id, onBack }) => {
       <PanelHeader before={<PanelHeaderBack onClick={onBack} />}>
         Ваши билеты
       </PanelHeader>
-      <Group style={{ paddingBottom: 100 }}>
+      <Group mode="plain">
         <CardGrid style={{ background: "none", marginTop: 60 }}>
-          <CardScroll size="l" style={{ width: 900, height: 100 }}>
-            <Card
-              mode="shadow"
-              style={{ backgroundColor: "white", width: 450 }}
-            >
+          <CardScroll size="l" style={{ width: 900 }}>
+            <Card mode="shadow" style={{ width: 450 }}>
               <Cell before={<Image src={verifierQr} size={96} />}>
                 <Text weight="2">Wallaby Feeding</Text>
                 <Spacing size={6} />
@@ -47,10 +44,7 @@ const MyTickets: React.FC<IProps> = ({ id, onBack }) => {
                 ID билета: 0xfsdke34fo5ppsdfyw8q
               </Div>
             </Card>
-            <Card
-              mode="shadow"
-              style={{ backgroundColor: "white", width: 450 }}
-            >
+            <Card mode="shadow" style={{ width: 450 }}>
               <Cell before={<Image src={verifierQr} size={96} />}>
                 <Text weight="2">Wallaby Feeding</Text>
                 <Spacing size={6} />

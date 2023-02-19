@@ -3,6 +3,7 @@ import React, { useState, createRef, useEffect } from "react";
 import {
   Panel,
   CardGrid,
+  CardScroll,
   Card,
   Div,
   Group,
@@ -16,15 +17,19 @@ import {
 } from "@vkontakte/vkui";
 
 import { useStores } from "@/hooks/useStores";
+import { unixToDate } from "@/utils/dates";
+import { ReactComponent as TicketIcon } from "public/img/ticket.svg";
+import { ReactComponent as LocationIcon } from "public/img/location.svg";
 import { Icon16Microphone, Icon16Search } from "@vkontakte/icons";
 import "./index.css";
 
 interface IProps {
   id: string;
+  go: () => void;
 }
 
-const Main: React.FC<IProps> = ({ id }) => {
-  const [ticketsData, setTicketsData] = useState<string[] | null | undefined>(
+const Main: React.FC<IProps> = ({ id, go }) => {
+  const [ticketsData, setTicketsData] = useState<string[][] | null | undefined>(
     []
   );
   const textInput = createRef<HTMLInputElement>();
@@ -34,10 +39,15 @@ const Main: React.FC<IProps> = ({ id }) => {
   const [formItemStatus, setFormItemStatus] = useState<
     "default" | "error" | "valid" | undefined
   >("default");
-
   const {
-    AppStore: { getAllTickets }
+    AppStore: { getAllTickets, setChoosenTicket }
   } = useStores();
+
+  const handleTicketClick = (key: number) => {
+    if (!ticketsData) return;
+    setChoosenTicket(ticketsData[key], key.toString());
+    go();
+  };
 
   useEffect(() => {
     const reqTicketsData = async () => {
@@ -58,14 +68,14 @@ const Main: React.FC<IProps> = ({ id }) => {
             <Div style={{ margin: "auto", textAlign: "center" }}>
               Выбор События
             </Div>
-            <Div style={{ position: "relative", padding: 0 }}>
+            <Div style={{ position: "relative", display: "flex", padding: 0 }}>
               <img
                 alt="banner"
                 className="banner-card__image"
                 src="/img/main_banner.png"
               />
               <Div className="banner-card__text">
-                <Title weight="1" size={24}>
+                <Title style={{ color: "#fff" }} weight="1" size={24}>
                   Next generation of tickets
                 </Title>
                 <Headline
@@ -103,34 +113,79 @@ const Main: React.FC<IProps> = ({ id }) => {
               </FormItem>
             </FormLayout>
 
-            {ticketsData?.length && (
-              <Group>
-                {ticketsData.map((_) => {
-                  if (!_.length) return null;
-                  return (
-                    <Div>
-                      <Title
-                        weight="1"
-                        size={24}
-                        style={{ marginBottom: "10px" }}
-                      >
-                        Билет {_[3]}
-                      </Title>
-                      <Text width={500} size={16}>
-                        Организатор
-                      </Text>
-                      <Text style={{ fontSize: "12px", marginBottom: "10px" }}>
-                        {_[0]}
-                      </Text>
-                      <Text width={500} size={16}>
-                        Локация
-                      </Text>
-                      <Text style={{ fontSize: "12px" }}>{_[1]}</Text>
-                    </Div>
-                  );
-                })}
+            {ticketsData?.length && ticketsData?.length > 0 ? (
+              <Group mode="plain" className="tickets-cards">
+                <CardGrid size="l" style={{ marginBottom: "20px" }}>
+                  <CardScroll size="l" style={{ width: "520px" }}>
+                    {ticketsData.map((_, index) => {
+                      if (!_.length) return null;
+                      return (
+                        <Card
+                          key={index}
+                          onClick={() => handleTicketClick(index)}
+                          mode="shadow"
+                          style={{ width: 450, margin: "8px 15px 8px 0" }}
+                        >
+                          <Div>
+                            <Title
+                              weight="1"
+                              size={24}
+                              style={{ marginBottom: "5px" }}
+                            >
+                              Билет {_[3]}
+                            </Title>
+                            <Text weight="1" size={16}>
+                              Организатор
+                            </Text>
+                            <Text
+                              style={{ fontSize: "12px", marginBottom: "5px" }}
+                            >
+                              {_[0]}
+                            </Text>
+                            <Div className="text-row">
+                              <Text weight="1" size={16}>
+                                Начало продаж
+                              </Text>
+                              <Text
+                                style={{
+                                  fontSize: "12px",
+                                  marginLeft: "10px"
+                                }}
+                              >
+                                {unixToDate(+_[2])}
+                              </Text>
+                            </Div>
+                            <Div className="text-row">
+                              <TicketIcon />
+                              <Text
+                                style={{
+                                  fontSize: "12px",
+                                  marginLeft: "10px"
+                                }}
+                              >
+                                Всего {_[4] ?? 0} Билетов
+                              </Text>
+                            </Div>
+                            <Div className="text-row">
+                              <LocationIcon />
+                              <Text
+                                style={{
+                                  fontSize: "12px",
+                                  marginLeft: "10px"
+                                }}
+                                size={16}
+                              >
+                                Локация {_[1]}
+                              </Text>
+                            </Div>
+                          </Div>
+                        </Card>
+                      );
+                    })}
+                  </CardScroll>
+                </CardGrid>
               </Group>
-            )}
+            ) : null}
           </Card>
         </CardGrid>
       </Group>
