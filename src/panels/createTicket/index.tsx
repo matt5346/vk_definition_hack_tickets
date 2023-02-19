@@ -17,6 +17,7 @@ import {
   CellButton,
   Button,
   Div,
+  Spinner,
   ModalRoot
 } from "@vkontakte/vkui";
 import TicketFormModal from "@/components/ticketFormModal";
@@ -40,6 +41,7 @@ type TType = {
 const CreateTickets: React.FC<IHomeProps> = ({ id, onBack, userInfo }) => {
   const [purpose, setPurpose] = useState<string>("");
   const [getLocation, setLocation] = useState<string>("");
+  const [isLoading, setLoading] = useState<boolean>(false);
   const [ticketsData, setTicketsData] = useState<TType[]>([]);
   const [activeModal, setActiveModal] = React.useState<string | undefined>(
     undefined
@@ -61,15 +63,18 @@ const CreateTickets: React.FC<IHomeProps> = ({ id, onBack, userInfo }) => {
     setActiveModal(activeModal ? undefined : "createTicketModal");
   };
 
-  const submitFullTicket = () => {
+  const submitFullTicket = async () => {
     console.log(purpose, "submitFullTicket");
-    createNewTicket([
+    setLoading(true);
+    await createNewTicket([
       purpose,
       getLocation,
       dayjs(ticketDate).unix().toString(),
       ticketsData[0].name,
       ticketsData[0].amount
     ]);
+    setLoading(false);
+    onBack();
   };
 
   return (
@@ -190,14 +195,18 @@ const CreateTickets: React.FC<IHomeProps> = ({ id, onBack, userInfo }) => {
                       textAlign: "right"
                     }}
                   >
-                    <Button
-                      style={{ marginLeft: "auto" }}
-                      size="l"
-                      mode="primary"
-                      onClick={submitFullTicket}
-                    >
-                      Создать
-                    </Button>
+                    {!isLoading ? (
+                      <Button
+                        style={{ marginLeft: "auto" }}
+                        size="l"
+                        mode="primary"
+                        onClick={submitFullTicket}
+                      >
+                        Создать
+                      </Button>
+                    ) : (
+                      <Spinner />
+                    )}
                   </Div>
                 </FormLayout>
               </Card>

@@ -5,7 +5,7 @@ import SmartContract from "@/crypto/EVM/SmartContract";
 import { Contract } from "ethers";
 import web3 from "web3";
 
-const contractId = "0x70d3fE4E0D8883E06A511304Bce71ffEA001AF4c";
+const contractId = "0x11B7B6829bae887d823DBE6024aABFaabB0a1Afd";
 
 class AppStore {
   constructor() {
@@ -182,8 +182,8 @@ class AppStore {
     console.log(this.connection.userIdentity, "this.connection.userIdentity");
     const contract = new Contract(contractId, TicketsAbi, provider);
     const mintReq = await contract.doEvent(val, {
-      gasLimit: 5000000,
-      gasPrice: 1300000000
+      gasLimit: 5500000,
+      gasPrice: 1500000000
     });
     console.log(mintReq, "mintReq");
     console.log(mintReq.value.toString(), "mintReq.value");
